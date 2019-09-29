@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Home(),
     ));
 
@@ -25,23 +26,23 @@ class _HomeState extends State<Home> {
   }
 
   void _calculate() {
-    double weight = double.parse(weightController.text);
-    double height = double.parse(heightController.text) / 100;
-    double imc = weight / (height * height);
-
     setState(() {
+      double weight = double.parse(weightController.text);
+      double height = double.parse(heightController.text) / 100;
+      double imc = weight / (height * height);
+
       if (imc < 18.6) {
-        _infoText = "Abaixo do Peso (${imc.toStringAsPrecision(3)})";
+        _infoText = "Abaixo do Peso (${imc.toStringAsFixed(3)})";
       } else if (imc >= 18.6 && imc < 24.9) {
-        _infoText = "Peso Ideal (${imc.toStringAsPrecision(3)})";
+        _infoText = "Peso Ideal (${imc.toStringAsFixed(3)})";
       } else if (imc >= 24.9 && imc < 29.9) {
-        _infoText = "Levemente acima do peso (${imc.toStringAsPrecision(3)})";
+        _infoText = "Levemente acima do peso (${imc.toStringAsFixed(3)})";
       } else if (imc >= 29.9 && imc < 34.9) {
-        _infoText = "Obesidade Grau I (${imc.toStringAsPrecision(3)})";
+        _infoText = "Obesidade Grau I (${imc.toStringAsFixed(3)})";
       } else if (imc >= 34.9 && imc < 39.9) {
-        _infoText = "Obesidade Grau II (${imc.toStringAsPrecision(3)})";
+        _infoText = "Obesidade Grau II (${imc.toStringAsFixed(3)})";
       } else if (imc >= 40) {
-        _infoText = "Obesidade Grau III (${imc.toStringAsPrecision(3)})";
+        _infoText = "Obesidade Grau III (${imc.toStringAsFixed(3)})";
       }
     });
   }
@@ -49,7 +50,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-
     weightControllerFocus = FocusNode();
   }
 
@@ -72,7 +72,6 @@ class _HomeState extends State<Home> {
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Form(
             key: _formKey,
@@ -95,7 +94,7 @@ class _HomeState extends State<Home> {
                   },
                 ),
                 TextFormField(
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
                   decoration: InputDecoration(
                       labelText: "Altura (cm)",
                       labelStyle: TextStyle(color: Colors.green)),
@@ -112,8 +111,8 @@ class _HomeState extends State<Home> {
                     height: 50.0,
                     child: RaisedButton(
                       onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          _calculate;
+                        if(_formKey.currentState.validate()){
+                          _calculate();
                         }
                       },
                       child: Text(
@@ -140,7 +139,6 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
-        ),
       ),
     );
   }
